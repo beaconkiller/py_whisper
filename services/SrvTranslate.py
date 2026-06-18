@@ -4,9 +4,29 @@ import os
 
 class SrvTranslate:
 
-    def test(self):
-        print('test')
 
+    def run_translate_batch(self):
+        files = self.getFiles()
+
+        i = 0
+        for audio in files:
+            print(i)
+            self.translateAudio(audio)
+            i +=1 
+
+
+
+    def getFiles(self):
+        curDir = os.getcwd()
+        fileStorage = os.path.join(curDir, 'file_storage', 'audio_in')
+        files = os.listdir(fileStorage)
+
+        arr = []
+        for el in files:
+            if(el == '.gitkeep') : continue
+            arr.append(os.path.join(curDir, 'file_storage', 'audio_in', el))
+
+        return arr
 
 
 
@@ -19,7 +39,7 @@ class SrvTranslate:
             compute_type="int8"
         )
 
-        segments = model.transcribe(
+        segments,info = model.transcribe(
             filePath,
             beam_size=5 
         )

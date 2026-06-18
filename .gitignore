@@ -1,5 +1,9 @@
-file_storage/
-!file_storage/
 
+file_storage/audio_in/*
+!file_storage/audio_in/.gitkeep
+
+
+services/__pycache__/
+**/__pycache__/
 
 venv/

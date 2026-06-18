@@ -3,7 +3,9 @@ from scipy.io.wavfile import write
 
 
 class SrvRecord:
-    def record():
+
+
+    def record(self):
         sample_rate = 44100                     # frequency
         duration = 5                            # in seconds
         filename = "my_voice_recording.wav"

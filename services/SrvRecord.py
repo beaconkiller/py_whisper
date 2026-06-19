@@ -62,8 +62,11 @@ class SrvRecord:
             while self.is_recording:
                 data, overflowed = stream.read(stream.blocksize)
                 data = data * 6     # Gain. Change it to increase the volume.
+        
                 actual_volume = np.mean(np.abs(data.astype(np.float64)))
-
+                # print(actual_volume * 250)
+                self.draw_data(actual_volume * 250)
+                
                 await SrvHelper.delay(0.001)
 
                 arr_data.append(data.copy())
@@ -101,9 +104,6 @@ class SrvRecord:
 
     def draw_data(self, data):
         str_data = ''
-        # data = str(data)[0]
-        # if (data == '-') : 
-        #     data = 1    
         for i in range(int(data)):
             str_data = str_data + '|'
         print(str_data)

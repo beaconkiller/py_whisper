@@ -1,10 +1,29 @@
-Use this to save installed package.
+-------------------------------------------------------
+------------------ BEFORE EVERYTHING ------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-- It's advised to run the package manager (PIP)     --
+-- inside a venv. If you're new to python, do this   --
+-- line below (idk if its the proper way or not tho) --
 
-pip freeze > requirements.txt
+-- python -m venv venv                               --
+
+-- Then activate the venv and proceed to install     --
+-- all the packages using the lines below.           --
+-------------------------------------------------------
+-------------------------------------------------------
+-------------------------------------------------------
+-- Use this to save installed package.               --
+--                                                   --
+-- pip freeze > requirements.txt                     --
+-------------------------------------------------------
+-------------------------------------------------------
+-- Use this to install packages using                --
+-- a requirements.txt                                --
+--                                                   --
+-- pip install -r requirements.txt                   --
+-------------------------------------------------------
 
 
 
-Use this to install packages using a requirements.txt
-
-pip install -r requirements.txt
 

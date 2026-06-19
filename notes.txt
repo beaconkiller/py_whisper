@@ -1,0 +1,10 @@
+Use this to save installed package.
+
+pip freeze > requirements.txt
+
+
+
+Use this to install packages using a requirements.txt
+
+pip install -r requirements.txt
+

@@ -55,17 +55,15 @@ class SrvRecord:
         )
 
 
-        arr_data = []
-        i = 0
-        record_ceil = 500
+        arr_data = []               # Array to put the recorded data before it get flushed before saving it to a .wav.
+        i = 0                       # Counter.
+        record_ceil = 500           # Treshold before it gets cut and then saved to a .wav.
         with stream:
             while self.is_recording:
                 data, overflowed = stream.read(stream.blocksize)
-                data = data * 3 
-
+                data = data * 6     # Gain. Change it to increase the volume.
                 actual_volume = np.mean(np.abs(data.astype(np.float64)))
 
-                # self.draw_data(actual_volume * 1000)
                 await SrvHelper.delay(0.001)
 
                 arr_data.append(data.copy())

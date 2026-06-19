@@ -55,21 +55,25 @@ class SrvRecord:
         )
 
 
+        arr_data = []
         i = 0
+        record_ceil = 500
         with stream:
             while self.is_recording:
                 data, overflowed = stream.read(stream.blocksize)
-                data = data * 3
+                data = data * 3 
 
                 actual_volume = np.mean(np.abs(data.astype(np.float64)))
 
-
-                # print("\033[H\033[2J", end="")
-                # print( data.shape, overflowed, np.mean(data.astype(np.float64)), i)
-                # print( data.shape, overflowed, np.mean(np.abs(data.astype(np.float64))), i)
-                self.draw_data(actual_volume * 1000)
-                # print(f"Shape: {data.shape} | Overflow: {overflowed} | Vol: {actual_volume:.6f} | Iteration: {i}")
+                # self.draw_data(actual_volume * 1000)
                 await SrvHelper.delay(0.001)
+
+                arr_data.append(data.copy())
+                if (i > 0) & (i % record_ceil == 0):
+                    chunk = np.concatenate(arr_data)
+                    asyncio.create_task(self.save_chunk(chunk))
+                    arr_data = []
+                    
                 i+=1
 
 
@@ -78,6 +82,17 @@ class SrvRecord:
         #     print(i)
         #     await SrvHelper.delay(2)
         #     i+=1 
+        
+        
+        
+    async def save_chunk(self, data):
+        print(f"------------ {data} ------------")
+        filePath = os.path.join(SrvDir.dir_recording_out, f"recording_{SrvHelper.getDateString()}.wav")
+        write(
+            filePath, 
+            self.obj_record_config["sample_rate"], 
+            data
+        )
 
 
 

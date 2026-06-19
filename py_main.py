@@ -7,6 +7,7 @@ from services.SrvTranslate import SrvTranslate
 
 
 def main():
+    ''
     # SrvTranslate.run_translate_batch()
     # SrvRecord.record()
     asyncio.run(SrvRecord.record_continuously())

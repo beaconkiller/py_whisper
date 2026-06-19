@@ -2,6 +2,9 @@
 file_storage/audio_in/*
 !file_storage/audio_in/.gitkeep
 
+file_storage/recording_out/*
+!file_storage/recording_out/.gitkeep
+
 
 services/__pycache__/
 **/__pycache__/

@@ -43,7 +43,7 @@ class SrvRecord:
 
 
 
-    async def record_continuously(self):
+    async def record_sequential(self):
 
         self.is_recording = True
 
@@ -78,11 +78,41 @@ class SrvRecord:
                 i+=1
 
 
-        # i = 0
-        # while i < 4 :
-        #     print(i)
-        #     await SrvHelper.delay(2)
-        #     i+=1 
+
+    async def record_continuously(self):
+
+        self.is_recording = True
+
+        stream = sd.InputStream(
+            samplerate=self.obj_record_config['sample_rate'],
+            dtype='float32',
+            channels=1,
+            blocksize=1024
+        )
+
+
+        arr_data = []               # Array to put the recorded data before it get flushed before saving it to a .wav.
+        i = 0                       # Counter.
+        record_ceil = 500           # Treshold before it gets cut and then saved to a .wav.
+        with stream:
+            while self.is_recording:
+                data, overflowed = stream.read(stream.blocksize)
+                data = data * 6     # Gain. Change it to increase the volume.
+        
+                actual_volume = np.mean(np.abs(data.astype(np.float64)))
+                # print(actual_volume * 250)
+                print(data.astype(np.float64))
+                # self.draw_data(actual_volume * 250)
+                
+                await SrvHelper.delay(0.001)
+
+                # arr_data.append(data.copy())
+                # if (i > 0) & (i % record_ceil == 0):
+                #     chunk = np.concatenate(arr_data)
+                #     asyncio.create_task(self.save_chunk(chunk))
+                #     arr_data = []
+                    
+                i+=1
         
         
         

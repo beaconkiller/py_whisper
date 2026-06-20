@@ -60,9 +60,9 @@ class SrvRecord:
         record_ceil = 500           # Treshold before it gets cut and then saved to a .wav.
         with stream:
             while self.is_recording:
-                data, overflowed = stream.read(stream.blocksize)
+                data,overflowed = stream.read(stream.blocksize)
                 data = data * 6     # Gain. Change it to increase the volume.
-        
+
                 actual_volume = np.mean(np.abs(data.astype(np.float64)))
                 # print(actual_volume * 250)
                 self.draw_data(actual_volume * 250)
@@ -70,11 +70,10 @@ class SrvRecord:
                 await SrvHelper.delay(0.001)
 
                 arr_data.append(data.copy())
-                if (i > 0) & (i % record_ceil == 0):
-                    chunk = np.concatenate(arr_data)
-                    asyncio.create_task(self.save_chunk(chunk))
-                    arr_data = []
-                    
+                # if (i > 0) & (i % record_ceil == 0):
+                #     chunk = np.concatenate(arr_data)                # To collect the array and put it into a small chunk.
+                #     asyncio.create_task(self.save_chunk(chunk))
+                #     arr_data = []
                 i+=1
 
 
@@ -91,27 +90,33 @@ class SrvRecord:
         )
 
 
-        arr_data = []               # Array to put the recorded data before it get flushed before saving it to a .wav.
-        i = 0                       # Counter.
-        record_ceil = 500           # Treshold before it gets cut and then saved to a .wav.
+        arr_data = []
+        i = 0
+        record_ceil = 500
         with stream:
             while self.is_recording:
-                data, overflowed = stream.read(stream.blocksize)
-                data = data * 6     # Gain. Change it to increase the volume.
-        
-                actual_volume = np.mean(np.abs(data.astype(np.float64)))
-                # print(actual_volume * 250)
-                print(data.astype(np.float64))
-                # self.draw_data(actual_volume * 250)
+                data,overflowed = stream.read(stream.blocksize)
+                data = data * 3     # Gain. Change it to increase the volume.
+
+                actual_volume = (np.mean(np.abs(data.astype(np.float64))))
+                threshold = 20
+                record = False
                 
+                if((actual_volume*1000) > threshold) : 
+                    print(actual_volume * 1000)
+                    self.draw_data(actual_volume * 1000)  
+                    
+                # print(actual_volume * 1000 > threshold )
+                # print(actual_volume * 1000, threshold )
+
                 await SrvHelper.delay(0.001)
 
-                # arr_data.append(data.copy())
+                arr_data.append(data.copy())
                 # if (i > 0) & (i % record_ceil == 0):
-                #     chunk = np.concatenate(arr_data)
+                #     chunk = np.concatenate(arr_data)                # To collect the array and put it into a small chunk.
                 #     asyncio.create_task(self.save_chunk(chunk))
                 #     arr_data = []
-                    
+                
                 i+=1
         
         
